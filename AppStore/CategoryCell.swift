@@ -26,38 +26,51 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
     let dividerLineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Best New Apps"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     func setupViews() {
         self.backgroundColor = .clear
+        
+        self.addSubview(self.appsCollectionView)
+        self.addSubview(self.dividerLineView)
+        self.addSubview(self.nameLabel)
         
         self.appsCollectionView.delegate = self
         self.appsCollectionView.dataSource = self
         
         self.appsCollectionView.register(AppCell.self, forCellWithReuseIdentifier: cellID)
         
-        self.addSubview(self.appsCollectionView)
-        self.addSubview(self.dividerLineView)
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.nameLabel]))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.dividerLineView]))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0][v1(0.5)]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView, "v1":self.dividerLineView]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[nameLabel(30)][v0][v1(0.5)]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView, "v1":self.dividerLineView, "nameLabel":self.nameLabel]))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 25
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: self.bounds.height)
+        return CGSize(width: 100, height: self.bounds.height - 32)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -82,8 +95,7 @@ class AppCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        // TODO: Add image asset from online material.
-        iv.image = UIImage(named: "")
+        iv.image = UIImage(named: "frozen")
         iv.contentMode = .scaleAspectFit
         iv.layer.cornerRadius = 16
         iv.layer.masksToBounds = true
@@ -92,7 +104,7 @@ class AppCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Disney Build It! Frozen"
+        label.text = "Disney Build It: Frozen"
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 2
         return label
@@ -115,7 +127,7 @@ class AppCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-        self.backgroundColor = .black
+        self.backgroundColor = .clear
         
         self.addSubview(self.imageView)
         self.addSubview(self.nameLabel)
