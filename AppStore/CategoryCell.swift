@@ -80,10 +80,20 @@ class AppCell: UICollectionViewCell {
         return iv
     }()
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Disney Build It! Frozen"
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
     func setupViews() {
         self.backgroundColor = .black
         
         self.addSubview(self.imageView)
-        self.imageView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self.addSubview(self.nameLabel)
+        
+        self.imageView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.width)
+        self.nameLabel.frame = CGRect(x: 0, y: self.bounds.width + 1, width: self.bounds.width, height: 40)
     }
 }
