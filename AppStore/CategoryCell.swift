@@ -29,6 +29,12 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
         return collectionView
     }()
     
+    let dividerLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        return view
+    }()
+    
     func setupViews() {
         self.backgroundColor = .clear
         
@@ -38,8 +44,12 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
         self.appsCollectionView.register(AppCell.self, forCellWithReuseIdentifier: cellID)
         
         self.addSubview(self.appsCollectionView)
+        self.addSubview(self.dividerLineView)
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.dividerLineView]))
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0][v1(0.5)]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView, "v1":self.dividerLineView]))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -83,7 +93,24 @@ class AppCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Disney Build It! Frozen"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Entertainment"
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = .darkGray
+        return label
+    }()
+    
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "$3.99"
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = .darkGray
         return label
     }()
     
@@ -92,8 +119,12 @@ class AppCell: UICollectionViewCell {
         
         self.addSubview(self.imageView)
         self.addSubview(self.nameLabel)
+        self.addSubview(self.categoryLabel)
+        self.addSubview(self.priceLabel)
         
         self.imageView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.width)
-        self.nameLabel.frame = CGRect(x: 0, y: self.bounds.width + 1, width: self.bounds.width, height: 40)
+        self.nameLabel.frame = CGRect(x: 0, y: self.bounds.width + 2, width: self.bounds.width, height: 40)
+        self.categoryLabel.frame = CGRect(x: 0, y: self.bounds.width + 38, width: self.bounds.width, height: 20)
+        self.priceLabel.frame = CGRect(x: 0, y: self.bounds.width + 56, width: self.bounds.width, height: 20)
     }
 }
