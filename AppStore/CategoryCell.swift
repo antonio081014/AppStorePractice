@@ -12,6 +12,14 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
     
     let cellID = "cellID"
     
+    var appCategory: AppCategory? {
+        didSet {
+            if let name = appCategory?.name {
+                self.nameLabel.text = name
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupViews()
@@ -66,7 +74,7 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 25
+        return self.appCategory?.apps?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -75,6 +83,7 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! AppCell
+        cell.app = self.appCategory?.apps?[indexPath.item]
         return cell
     }
     
@@ -84,6 +93,23 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
 }
 
 class AppCell: UICollectionViewCell {
+    
+    var app: App? {
+        didSet {
+            self.nameLabel.text = app?.name
+            self.categoryLabel.text = app?.category
+            if let price = app?.price {
+                self.priceLabel.text = "$\(price)"
+            } else {
+                self.priceLabel.text = ""
+            }
+            
+            if let imageName = app?.imageName {
+                self.imageView.image = UIImage(named: imageName)
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupViews()
