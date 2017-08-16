@@ -96,7 +96,21 @@ class AppCell: UICollectionViewCell {
     
     var app: App? {
         didSet {
-            self.nameLabel.text = app?.name
+            if let name = app?.name {
+                self.nameLabel.text = name
+                
+                let rect = NSString(string: name).boundingRect(with: CGSize.init(width: self.bounds.width, height: 1000), options: [NSStringDrawingOptions.usesFontLeading, NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14)], context: nil)
+                self.nameLabel.frame = rect
+                if rect.height > 20 {
+                    self.categoryLabel.frame = CGRect(x: 0, y: self.bounds.width + 38, width: self.bounds.width, height: 20)
+                    self.priceLabel.frame = CGRect(x: 0, y: self.bounds.width + 56, width: self.bounds.width, height: 20)
+                } else {
+                    self.categoryLabel.frame = CGRect(x: 0, y: self.bounds.width + 22, width: self.bounds.width, height: 20)
+                    self.priceLabel.frame = CGRect(x: 0, y: self.bounds.width + 40, width: self.bounds.width, height: 20)
+                }
+                self.nameLabel.frame = CGRect(x: 0, y: self.bounds.width + 4, width: self.bounds.width, height: 40)
+                self.nameLabel.sizeToFit()
+            }
             self.categoryLabel.text = app?.category
             if let price = app?.price {
                 self.priceLabel.text = "$\(price)"
