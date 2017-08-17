@@ -8,12 +8,17 @@
 
 import UIKit
 
+class FeaturedApps: NSObject {
+    var bannerCategory: AppCategory?
+    var appCategories: [AppCategory]?
+}
+
 class AppCategory: NSObject {
     
     var name: String?
     var apps: [App]?
     
-    static func fetchFeaturedApps(completion: @escaping (([AppCategory]) -> Swift.Void)) {
+    static func fetchFeaturedApps(completion: @escaping ((FeaturedApps) -> Swift.Void)) {
         let urlString = "http://www.statsallday.com/appstore/featured"
         URLSession.shared.dataTask(with: URL(string: urlString)!) { (data, response, error) in
             if error != nil {
@@ -22,7 +27,19 @@ class AppCategory: NSObject {
             }
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-                if let dictionary = json as? [String : Any], let categories =  dictionary["categories"] as? [[String : Any]] {
+                if let dictionary = json as? [String : Any], let categories =  dictionary["categories"] as? [[String : Any]], let bannerCategories = dictionary["bannerCategory"] as? [String : Any] {
+                    let featuredApps = FeaturedApps()
+                    
+                    let bannerCategory = AppCategory()
+                    bannerCategory.name = bannerCategories["name"] as? String
+                    var bannerApps = [App]()
+                    for bApp in bannerCategories["apps"] as! [[String : Any]] {
+                        let app = App()
+                        app.imageName = bApp["ImageName"] as? String
+                        bannerApps.append(app)
+                    }
+                    bannerCategory.apps = bannerApps
+                    
                     var appCategories = [AppCategory]()
                     for dict in categories {
                         let category = AppCategory()
@@ -41,8 +58,11 @@ class AppCategory: NSObject {
                         appCategories.append(category)
                     }
                     
+                    featuredApps.bannerCategory = bannerCategory
+                    featuredApps.appCategories = appCategories
+                    
                     DispatchQueue.main.async {
-                        completion(appCategories)
+                        completion(featuredApps)
                     }
                 }
             } catch let err {

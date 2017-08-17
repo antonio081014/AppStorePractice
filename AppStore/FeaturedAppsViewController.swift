@@ -14,7 +14,7 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     private let largeCellID = "largeCellID"
     private let headerID = "headerID"
     
-    var appCategories: [AppCategory]? {
+    var featuredAppCategories: FeaturedApps? {
         didSet {
             self.collectionView?.reloadData()
         }
@@ -22,8 +22,9 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "App Store"
-        AppCategory.fetchFeaturedApps { self.appCategories = $0 }
+        self.navigationItem.title = "Featured Apps"
+        
+        AppCategory.fetchFeaturedApps { self.featuredAppCategories = $0 }
         
         self.collectionView?.backgroundColor = .white
         self.collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: cellID)
@@ -32,17 +33,17 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.appCategories?.count ?? 0
+        return self.featuredAppCategories?.appCategories?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeCellID, for: indexPath) as! LargeCategoryCell
-            cell.appCategory = self.appCategories?[indexPath.item]
+            cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! CategoryCell
-        cell.appCategory = self.appCategories?[indexPath.item]
+        cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
         return cell
     }
     
@@ -56,12 +57,12 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID, for: indexPath) as! Header
-        header.appCategory = self.appCategories?.first
+        header.appCategory = self.featuredAppCategories?.bannerCategory
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: 150)
+        return CGSize(width: self.view.bounds.width, height: 120)
     }
 }
 
@@ -69,7 +70,6 @@ class Header: CategoryCell {
     private let bannerCellID = "bannerCellID"
     
     override func setupViews() {
-        
         self.addSubview(self.appsCollectionView)
         self.appsCollectionView.register(BannerCell.self, forCellWithReuseIdentifier: bannerCellID)
         self.appsCollectionView.delegate = self
@@ -77,6 +77,10 @@ class Header: CategoryCell {
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -90,12 +94,15 @@ class Header: CategoryCell {
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: self.bounds.height - 32)
+        return CGSize(width: self.bounds.width / 2 + 50, height: self.bounds.height)
     }
     
     fileprivate class BannerCell: AppCell {
         override func setupViews() {
             self.imageView.translatesAutoresizingMaskIntoConstraints = false
+            self.imageView.layer.cornerRadius = 0
+            self.imageView.layer.borderColor = UIColor(white: 0.5, alpha: 0.5).cgColor
+            self.imageView.layer.borderWidth = 0.5
             self.addSubview(self.imageView)
             self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.imageView]))
             self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[v0]-4-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.imageView]))
