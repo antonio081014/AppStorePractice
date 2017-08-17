@@ -14,6 +14,7 @@
 		9A8667CE1F42529900ABFCA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8667CD1F42529900ABFCA5 /* Assets.xcassets */; };
 		9A8667D11F42529900ABFCA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A8667CF1F42529900ABFCA5 /* LaunchScreen.storyboard */; };
 		9A8667D91F4264FF00ABFCA5 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8667D81F4264FF00ABFCA5 /* CategoryCell.swift */; };
+		9AA731C01F46404900A38EC7 /* AppDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA731BF1F46404900A38EC7 /* AppDetailCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		9A8667D01F42529900ABFCA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A8667D21F42529900ABFCA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8667D81F4264FF00ABFCA5 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		9AA731BF1F46404900A38EC7 /* AppDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,11 +63,12 @@
 				9A8667C61F42529800ABFCA5 /* AppDelegate.swift */,
 				9A8667C81F42529800ABFCA5 /* FeaturedAppsViewController.swift */,
 				9A8667D81F4264FF00ABFCA5 /* CategoryCell.swift */,
+				03A536701F43F0DF00D67A5D /* Models.swift */,
+				9AA731BF1F46404900A38EC7 /* AppDetailCollectionViewController.swift */,
 				9A8667CA1F42529900ABFCA5 /* Main.storyboard */,
 				9A8667CD1F42529900ABFCA5 /* Assets.xcassets */,
 				9A8667CF1F42529900ABFCA5 /* LaunchScreen.storyboard */,
 				9A8667D21F42529900ABFCA5 /* Info.plist */,
-				03A536701F43F0DF00D67A5D /* Models.swift */,
 			);
 			path = AppStore;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A8667C91F42529800ABFCA5 /* FeaturedAppsViewController.swift in Sources */,
+				9AA731C01F46404900A38EC7 /* AppDetailCollectionViewController.swift in Sources */,
 				9A8667C71F42529800ABFCA5 /* AppDelegate.swift in Sources */,
 				9A8667D91F4264FF00ABFCA5 /* CategoryCell.swift in Sources */,
 				03A536711F43F0DF00D67A5D /* Models.swift in Sources */,
