@@ -17,6 +17,7 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDelegateFlowLayout, UI
             if let name = appCategory?.name {
                 self.nameLabel.text = name
             }
+            self.appsCollectionView.reloadData()
         }
     }
     

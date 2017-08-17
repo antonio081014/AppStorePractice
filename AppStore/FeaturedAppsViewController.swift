@@ -12,6 +12,7 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
 
     private let cellID = "cellID"
     private let largeCellID = "largeCellID"
+    private let headerID = "headerID"
     
     var appCategories: [AppCategory]? {
         didSet {
@@ -27,6 +28,7 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
         self.collectionView?.backgroundColor = .white
         self.collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: cellID)
         self.collectionView?.register(LargeCategoryCell.self, forCellWithReuseIdentifier: largeCellID)
+        self.collectionView?.register(Header.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -51,18 +53,55 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
         }
         return CGSize(width: self.view.bounds.width, height: 230)
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID, for: indexPath) as! Header
+        header.appCategory = self.appCategories?.first
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: self.view.bounds.width, height: 150)
+    }
+}
+
+class Header: CategoryCell {
+    private let bannerCellID = "bannerCellID"
+    
+    override func setupViews() {
+        
+        self.appsCollectionView.register(BannerCell.self, forCellWithReuseIdentifier: bannerCellID)
+    }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: bannerCellID, for: indexPath) as! BannerCell
+        cell.app = self.appCategory?.apps?[indexPath.item]
+        return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 200, height: self.bounds.height - 32)
+    }
+    
+    fileprivate class BannerCell: AppCell {
+        override func setupViews() {
+            self.imageView.translatesAutoresizingMaskIntoConstraints = false
+            self.addSubview(self.imageView)
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.imageView]))
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[v0]-4-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.imageView]))
+        }
+    }
 }
 
 class LargeCategoryCell: CategoryCell {
     
-    private let largeAppCellId = "largeAppCellID"
+    private let largeAppCellID = "largeAppCellID"
     
     override func setupViews() {
         super.setupViews()
-        self.appsCollectionView.register(LargeAppCell.self, forCellWithReuseIdentifier: largeAppCellId)
+        self.appsCollectionView.register(LargeAppCell.self, forCellWithReuseIdentifier: largeAppCellID)
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeAppCellId, for: indexPath) as! LargeAppCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeAppCellID, for: indexPath) as! LargeAppCell
         cell.app = self.appCategory?.apps?[indexPath.item]
         return cell
     }
