@@ -22,7 +22,7 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Featured Apps"
+        self.navigationItem.title = "Featured"
         
         AppCategory.fetchFeaturedApps { self.featuredAppCategories = $0 }
         
@@ -30,6 +30,11 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
         self.collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: cellID)
         self.collectionView?.register(LargeCategoryCell.self, forCellWithReuseIdentifier: largeCellID)
         self.collectionView?.register(Header.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
+    }
+    
+    func showAppDetail(for app: App) {
+        let appDetailController = UIViewController()
+        self.navigationController?.pushViewController(appDetailController, animated: true)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -40,10 +45,12 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
         if indexPath.item == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeCellID, for: indexPath) as! LargeCategoryCell
             cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
+            cell.featuredAppController = self
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! CategoryCell
         cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
+        cell.featuredAppController = self
         return cell
     }
     
