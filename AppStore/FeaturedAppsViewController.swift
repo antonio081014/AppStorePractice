@@ -70,7 +70,13 @@ class Header: CategoryCell {
     
     override func setupViews() {
         
+        self.addSubview(self.appsCollectionView)
         self.appsCollectionView.register(BannerCell.self, forCellWithReuseIdentifier: bannerCellID)
+        self.appsCollectionView.delegate = self
+        self.appsCollectionView.dataSource = self
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":self.appsCollectionView]))
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: bannerCellID, for: indexPath) as! BannerCell
