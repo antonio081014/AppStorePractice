@@ -114,5 +114,9 @@ class App: NSObject {
     
     var price: Double?
     
+    var screenshots: [String]?
     
+    var desc: String?
+    
+    var appInformation: Any?
 }

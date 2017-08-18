@@ -10,8 +10,13 @@ import UIKit
 
 class ScreenshotsCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    // http://www.statsallday.com/appstore/appdetail?id=1
     private let cellID = "cellID"
+    
+    var app: App? {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,29 +26,41 @@ class ScreenshotsCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectio
         return cv
     }()
     
+    let dividerLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        return view
+    }()
+    
     override func setupViews() {
         super.setupViews()
         
         self.addSubview(self.collectionView)
+        self.addSubview(self.dividerLineView)
+        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(ScreenshotImageCell.self, forCellWithReuseIdentifier: cellID)
         
         self.addConstraint(with: "H:|[v0]|", views: self.collectionView)
-        self.addConstraint(with: "V:|[v0]|", views: self.collectionView)
+        self.addConstraint(with: "V:|[v0][v1(1)]|", views: self.collectionView, self.dividerLineView)
+        self.addConstraint(with: "H:|-14-[v0]|", views: self.dividerLineView)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.app?.screenshots?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ScreenshotImageCell
+        if let imageName = self.app?.screenshots?[indexPath.item] {
+            cell.imageView.image = UIImage(named:imageName)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: self.bounds.height - 28)
+        return CGSize(width: 240, height: self.bounds.height - 28)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -54,7 +71,7 @@ class ScreenshotsCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectio
         let imageView: UIImageView = {
             let iv = UIImageView()
             iv.contentMode = .scaleAspectFill
-            iv.backgroundColor = .green
+            iv.layer.masksToBounds = true
             return iv
         }()
         override func setupViews() {
