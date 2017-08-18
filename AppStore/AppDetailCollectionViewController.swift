@@ -13,6 +13,7 @@ private let reuseIdentifier = "Cell"
 class AppDetailCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     private let headerID = "headerID"
+    private let cellID = "cellID"
     
     var app: App? 
     
@@ -22,6 +23,7 @@ class AppDetailCollectionViewController: UICollectionViewController, UICollectio
         self.collectionView?.backgroundColor = .white
         self.collectionView?.alwaysBounceVertical = true
         self.collectionView?.register(AppDetailHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
+        self.collectionView?.register(ScreenshotsCell.self, forCellWithReuseIdentifier: cellID)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -31,6 +33,18 @@ class AppDetailCollectionViewController: UICollectionViewController, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: self.view.bounds.width, height: 170)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.bounds.width, height: 170)
     }
 }
