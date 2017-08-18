@@ -58,14 +58,31 @@ class AppDetailHeader: BaseCell {
         return iv
     }()
     
+    let segmentedControl: UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["Details", "Reviews", "Related"])
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        return sc
+    }()
+    
     override func setupViews() {
         super.setupViews()
         
         self.addSubview(self.imageView)
-        self.imageView.backgroundColor = .yellow
+        self.addSubview(self.segmentedControl)
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0(100)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": self.imageView]))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[v0(100)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": self.imageView]))
+        self.addConstraint(with: "H:|-14-[v0(100)]", views: self.imageView)
+        self.addConstraint(with: "V:|-14-[v0(100)]", views: self.imageView)
+    }
+}
+
+extension UIView {
+    func addConstraint(with format: String, views: UIView...) {
+        var dictionary = [String : UIView]()
+        for (index, view) in views.enumerated() {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            dictionary["v\(index)"] = view
+        }
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: dictionary))
     }
 }
 
