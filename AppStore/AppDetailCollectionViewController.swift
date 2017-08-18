@@ -14,11 +14,7 @@ class AppDetailCollectionViewController: UICollectionViewController, UICollectio
 
     private let headerID = "headerID"
     
-    var app: App? {
-        didSet {
-            self.navigationItem.title = app?.name
-        }
-    }
+    var app: App? 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +43,11 @@ class AppDetailHeader: BaseCell {
                 self.imageView.image = UIImage(named: imageName)
             }
             self.nameLabel.text = app?.name
+            if let price = app?.price {
+                self.buyButton.setTitle("$\(price)", for: .normal)
+            } else {
+                self.buyButton.setTitle("GET", for: .normal)
+            }
         }
     }
     
@@ -86,6 +87,12 @@ class AppDetailHeader: BaseCell {
         return button
     }()
     
+    let dividerLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        return view
+    }()
+    
     override func setupViews() {
         super.setupViews()
         
@@ -93,6 +100,7 @@ class AppDetailHeader: BaseCell {
         self.addSubview(self.segmentedControl)
         self.addSubview(self.nameLabel)
         self.addSubview(self.buyButton)
+        self.addSubview(self.dividerLineView)
         
         self.addConstraint(with: "H:|-14-[v0(100)]-8-[v1]|", views: self.imageView, self.nameLabel)
         self.addConstraint(with: "V:|-14-[v0(100)]", views: self.imageView)
@@ -100,9 +108,10 @@ class AppDetailHeader: BaseCell {
         self.addConstraint(with: "V:|-14-[v0(20)]", views: self.nameLabel)
         
         self.addConstraint(with: "H:|-40-[v0]-40-|", views: self.segmentedControl)
-        self.addConstraint(with: "V:[v0(32)]-8-[v1(34)]-8-|", views:self.buyButton, self.segmentedControl)
+        self.addConstraint(with: "V:[v0(32)]-8-[v1(34)]-8-[v2(0.8)]|", views:self.buyButton, self.segmentedControl, self.dividerLineView)
         
         self.addConstraint(with: "H:[v0(60)]-16-|", views: self.buyButton)
+        self.addConstraint(with: "H:|[v0]|", views: self.dividerLineView)
     }
 }
 
