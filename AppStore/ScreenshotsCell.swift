@@ -10,6 +10,7 @@ import UIKit
 
 class ScreenshotsCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    // http://www.statsallday.com/appstore/appdetail?id=1
     private let cellID = "cellID"
     
     let collectionView: UICollectionView = {
