@@ -12,11 +12,11 @@ class AppDetailHeader: BaseCell {
     
     var app: App? {
         didSet {
-            if let imageName = app?.imageName {
+            if let imageName = app?.ImageName {
                 self.imageView.image = UIImage(named: imageName)
             }
-            self.nameLabel.text = app?.name
-            if let price = app?.price {
+            self.nameLabel.text = app?.Name
+            if let price = app?.Price {
                 self.buyButton.setTitle("$\(price)", for: .normal)
             } else {
                 self.buyButton.setTitle("GET", for: .normal)

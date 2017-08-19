@@ -48,12 +48,12 @@ class ScreenshotsCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.app?.screenshots?.count ?? 0
+        return self.app?.Screenshots?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ScreenshotImageCell
-        if let imageName = self.app?.screenshots?[indexPath.item] {
+        if let imageName = self.app?.Screenshots?[indexPath.item] {
             cell.imageView.image = UIImage(named:imageName)
         }
         return cell

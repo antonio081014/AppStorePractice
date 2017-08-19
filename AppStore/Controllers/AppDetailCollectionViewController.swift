@@ -18,8 +18,8 @@ class AppDetailCollectionViewController: UICollectionViewController, UICollectio
     
     var app: App? {
         didSet {
-            if app?.screenshots != nil { return }
-            if let ID = app?.id {
+            if app?.Screenshots != nil { return }
+            if let ID = app?.Id {
                 let urlString = "http://www.statsallday.com/appstore/appdetail?id=\(ID)"
                 URLSession.shared.dataTask(with: URL(string: urlString)!, completionHandler: { (data, response, error) in
                     if error != nil {
@@ -30,12 +30,12 @@ class AppDetailCollectionViewController: UICollectionViewController, UICollectio
                     if let json = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any] {
                         
                         let detailApp = App()
-                        detailApp.id = json?["Id"] as? Int
-                        detailApp.name = json?["Name"] as? String
-                        detailApp.category = json?["Category"] as? String
-                        detailApp.price = json?["Price"] as? Double
-                        detailApp.imageName = json?["ImageName"] as? String
-                        detailApp.screenshots = json?["Screenshots"] as? [String]
+                        detailApp.Id = json?["Id"] as? Int
+                        detailApp.Name = json?["Name"] as? String
+                        detailApp.Category = json?["Category"] as? String
+                        detailApp.Price = json?["Price"] as? Double
+                        detailApp.ImageName = json?["ImageName"] as? String
+                        detailApp.Screenshots = json?["Screenshots"] as? [String]
                         detailApp.desc = json?["description"] as? String
                         detailApp.appInformation = json?["appInformation"] as? [[String : String]]
                         

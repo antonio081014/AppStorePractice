@@ -8,12 +8,12 @@
 
 import UIKit
 
-class FeaturedApps: NSObject {
+class FeaturedApps: NSObject, Decodable {
     var bannerCategory: AppCategory?
-    var appCategories: [AppCategory]?
+    var categories: [AppCategory]?
 }
 
-class AppCategory: NSObject {
+class AppCategory: NSObject, Decodable {
     
     var name: String?
     var apps: [App]?
@@ -25,45 +25,11 @@ class AppCategory: NSObject {
                 print(error!)
                 return
             }
+            guard let data = data else { return }
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-                if let dictionary = json as? [String : Any], let categories =  dictionary["categories"] as? [[String : Any]], let bannerCategories = dictionary["bannerCategory"] as? [String : Any] {
-                    let featuredApps = FeaturedApps()
-                    
-                    let bannerCategory = AppCategory()
-                    bannerCategory.name = bannerCategories["name"] as? String
-                    var bannerApps = [App]()
-                    for bApp in bannerCategories["apps"] as! [[String : Any]] {
-                        let app = App()
-                        app.imageName = bApp["ImageName"] as? String
-                        bannerApps.append(app)
-                    }
-                    bannerCategory.apps = bannerApps
-                    
-                    var appCategories = [AppCategory]()
-                    for dict in categories {
-                        let category = AppCategory()
-                        category.name = dict["name"] as? String
-                        var apps = [App]()
-                        for appDict in dict["apps"] as! [[String : Any]] {
-                            let app = App()
-                            app.name = appDict["Name"] as? String
-                            app.id = appDict["Id"] as? Int
-                            app.category = appDict["Category"] as? String
-                            app.imageName = appDict["ImageName"] as? String
-                            app.price = appDict["Price"] as? Double
-                            apps.append(app)
-                        }
-                        category.apps = apps
-                        appCategories.append(category)
-                    }
-                    
-                    featuredApps.bannerCategory = bannerCategory
-                    featuredApps.appCategories = appCategories
-                    
-                    DispatchQueue.main.async {
-                        completion(featuredApps)
-                    }
+                let featuredApps = try JSONDecoder().decode(FeaturedApps.self, from: data)
+                DispatchQueue.main.async {
+                    completion(featuredApps)
                 }
             } catch let err {
                 print(err)
@@ -78,10 +44,10 @@ class AppCategory: NSObject {
         var apps = [App]()
         
         let frozenApp = App()
-        frozenApp.name = "Disney Build It: Frozen"
-        frozenApp.imageName = "frozen"
-        frozenApp.category = "Entertainment"
-        frozenApp.price = 3.99
+        frozenApp.Name = "Disney Build It: Frozen"
+        frozenApp.ImageName = "frozen"
+        frozenApp.Category = "Entertainment"
+        frozenApp.Price = 3.99
         apps.append(frozenApp)
         
         bestNewAppCategory.apps = apps
@@ -91,10 +57,10 @@ class AppCategory: NSObject {
         
         var bestNewGameApps = [App]()
         let telepaintApp = App()
-        telepaintApp.category = "Games"
-        telepaintApp.name = "Telepaint"
-        telepaintApp.price = 2.99
-        telepaintApp.imageName = "telepaint"
+        telepaintApp.Category = "Games"
+        telepaintApp.Name = "Telepaint"
+        telepaintApp.Price = 2.99
+        telepaintApp.ImageName = "telepaint"
         bestNewGameApps.append(telepaintApp)
         bestNewGamesCategory.apps = bestNewGameApps
         
@@ -102,21 +68,23 @@ class AppCategory: NSObject {
     }
 }
 
-class App: NSObject {
+class App: NSObject, Decodable {
     
-    var id: Int?
+    var Id: Int?
     
-    var name: String?
+    var Name: String?
     
-    var category: String?
+    var Category: String?
     
-    var imageName: String?
+    var ImageName: String?
     
-    var price: Double?
+    var Price: Double?
     
-    var screenshots: [String]?
+    var Screenshots: [String]?
     
     var desc: String?
     
-    var appInformation: Any?
+    var appInformation: [[String : String]]?
+    
+    
 }

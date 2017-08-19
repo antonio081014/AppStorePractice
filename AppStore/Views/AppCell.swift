@@ -12,7 +12,7 @@ class AppCell: BaseCell {
     
     var app: App? {
         didSet {
-            if let name = app?.name {
+            if let name = app?.Name {
                 self.nameLabel.text = name
                 
                 let rect = NSString(string: name).boundingRect(with: CGSize.init(width: self.bounds.width, height: 1000), options: [NSStringDrawingOptions.usesFontLeading, NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14)], context: nil)
@@ -27,14 +27,14 @@ class AppCell: BaseCell {
                 self.nameLabel.frame = CGRect(x: 0, y: self.bounds.width + 4, width: self.bounds.width, height: 40)
                 self.nameLabel.sizeToFit()
             }
-            self.categoryLabel.text = app?.category
-            if let price = app?.price {
+            self.categoryLabel.text = app?.Category
+            if let price = app?.Price {
                 self.priceLabel.text = "$\(price)"
             } else {
                 self.priceLabel.text = ""
             }
             
-            if let imageName = app?.imageName {
+            if let imageName = app?.ImageName {
                 self.imageView.image = UIImage(named: imageName)
             }
         }

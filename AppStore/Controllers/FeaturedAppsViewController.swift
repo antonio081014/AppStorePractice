@@ -40,18 +40,18 @@ class FeaturedAppsViewController: UICollectionViewController, UICollectionViewDe
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.featuredAppCategories?.appCategories?.count ?? 0
+        return self.featuredAppCategories?.categories?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeCellID, for: indexPath) as! LargeCategoryCell
-            cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
+            cell.appCategory = self.featuredAppCategories?.categories?[indexPath.item]
             cell.featuredAppController = self
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! CategoryCell
-        cell.appCategory = self.featuredAppCategories?.appCategories?[indexPath.item]
+        cell.appCategory = self.featuredAppCategories?.categories?[indexPath.item]
         cell.featuredAppController = self
         return cell
     }
